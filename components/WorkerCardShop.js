@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
+import formatNumber from '../utils/formatNumbers';
 
 const WorkerCardShop = ({ worker, onPressed, buttonText }) => {
     const [pressed, setPressed] = useState(false); 
@@ -22,19 +23,23 @@ const WorkerCardShop = ({ worker, onPressed, buttonText }) => {
             <Text style={styles.title}>{worker.name}</Text>
             {buttonText === 'Buy' ?
             <Text style={styles.price}>
-                Price: ${worker.price}
+                Price: ${formatNumber(worker.price)}
             </Text>
             :
             <Text style={styles.price}>
-                Price: ${worker.upgrades[worker.level].cost}
+                Price: ${formatNumber(worker.upgrades[worker.level].cost)}
             </Text>
             }
             {buttonText === 'Buy' ?
-                <Text style={styles.clicksPerSecond}>Clicks/s: {worker.clicksPerSecond}</Text>
+                <Text style={styles.clicksPerSecond}>Clicks/s: {formatNumber(worker.clicksPerSecond)}</Text>
             :
-                <Text style={styles.clicksPerSecond}>Clicks/s: {worker.clicksPerSecond} {' -> '} {worker.upgrades[worker.level].multiplyingFactor*worker.clicksPerSecond}</Text>
+                <Text style={styles.clicksPerSecond}>Clicks/s: {formatNumber(worker.clicksPerSecond)} {' -> '} {formatNumber(worker.upgrades[worker.level].multiplyingFactor*worker.clicksPerSecond)}</Text>
             }
-            <Text style={styles.level}>Level: {worker.level}</Text>
+            {buttonText === 'Buy' ?
+                <Text style={styles.level}>Level: {worker.level} </Text>
+            :
+                <Text style={styles.level}>Level: {worker.level} {' -> '} {worker.level+1} </Text>
+            }
             <Pressable 
                 style={[styles.button, pressed && styles.buttonPressed]} 
                 onPressIn={handlePressIn} 
@@ -49,49 +54,51 @@ const WorkerCardShop = ({ worker, onPressed, buttonText }) => {
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: 'white',
-        borderRadius: 10,
-        padding: 10,
-        margin: 10,
+        backgroundColor: '#2C2C2E',
+        borderRadius: 15,
+        padding: 15,
+        marginVertical: 10,
+        marginHorizontal: 20,
+        alignItems: 'center', 
         shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.41,
-        elevation: 2,
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 4 },
+        elevation: 6,
     },
     image: {
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        width: 100,
-        height: 100,
-        borderRadius: 10,
+        width: 80,
+        height: 80,
+        borderRadius: 8,
+        marginBottom: 10,
     },
     title: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: 'bold',
-        marginVertical: 5,
+        color: '#E5E5E7', 
+        marginBottom: 5,
     },
     price: {
         fontSize: 16,
-        color: 'green',
+        color: '#4CAF50', 
+        marginBottom: 3,
     },
     clicksPerSecond: {
         fontSize: 16,
-        color: 'blue',
+        color: '#61DAFB', 
+        marginBottom: 3,
     },
     level: {
         fontSize: 16,
-        color: 'orange',
+        color: '#FF9F1C',
     },
     button: {
-        backgroundColor: '#FF5733',
-        padding: 10,
-        borderRadius: 5,
+        backgroundColor: '#2196f3',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 8,
         alignItems: 'center',
-        marginTop: 10,
+        marginTop: 15,
     },
     buttonText: {
         color: 'white', 
@@ -99,8 +106,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     buttonPressed: {
-        backgroundColor: '#FF3300', 
-        opacity: 0.7, 
+        backgroundColor: '#64b5f6', 
+        opacity: 0.85,
     },
 });
 

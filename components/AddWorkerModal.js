@@ -16,26 +16,16 @@ const AddWorkerModal = forwardRef(({onWorkerAdded}, ref) => {
 
     const { workers, setWorkers } = useContext(WorkersContext);
 
-    const translateX = useSharedValue(-width); 
-    const animatedModalStyle = useAnimatedStyle(() => {
-        return {
-            transform: [{ translateX: translateX.value }],
-        };
-    });
-
 
     useImperativeHandle(ref, () => ({
         openModal: () => {
             setIsModalVisible(true);
-            translateX.value = withTiming(0, { duration: 500 });
         }
     }));
 
 
     const handleCloseModal = () => {
-        translateX.value = withTiming(-width, { duration: 500 }, () => {
-            setIsModalVisible(false); 
-        });
+        setIsModalVisible(false); 
     };
 
     const handleWorkerAdded = (id) => {
@@ -46,8 +36,8 @@ const AddWorkerModal = forwardRef(({onWorkerAdded}, ref) => {
     const filteredWorkers = workers.filter(worker => worker.bought === true);
 
     return (
-        <Modal visible={isModalVisible} transparent animationType="none">
-            <Animated.View style={[styles.modal, animatedModalStyle]}>
+        <Modal visible={isModalVisible} transparent animationType="fade">
+            <View style={styles.modal}>
                 <Text style={styles.modalText}>Add Worker</Text>
                 <FlatList
                     data={filteredWorkers}
@@ -59,7 +49,7 @@ const AddWorkerModal = forwardRef(({onWorkerAdded}, ref) => {
                 <Pressable onPress={handleCloseModal} style={styles.closeButton}>
                     <Text style={styles.closeButtonText}>Close</Text>
                 </Pressable>
-            </Animated.View>
+            </View>
         </Modal>
     );
 });
@@ -72,24 +62,36 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         bottom: 0,
-        width: '50%', // Ocupa el 50% del ancho de la pantalla
-        backgroundColor: 'white',
-        justifyContent: 'center',
+        width: '60%', 
+        backgroundColor: '#1C1C1E',
+        padding: 20,
+        justifyContent: 'flex-start', 
         alignItems: 'center',
         elevation: 5,
+        shadowColor: '#000',
+        shadowOpacity: 0.3,
+        shadowOffset: { width: 0, height: 5 },
+        shadowRadius: 15,
     },
     modalText: {
-        fontSize: 18,
+        fontSize: 22,
         fontWeight: 'bold',
-        marginBottom: 20,
+        color: '#E5E5E7', 
+        marginBottom: 15,
+        alignSelf: 'flex-start',
     },
     closeButton: {
-        padding: 10,
-        backgroundColor: 'lightgray',
-        borderRadius: 5,
+        paddingVertical: 8,
+        paddingHorizontal: 20,
+        backgroundColor: '#FF5733',
+        borderRadius: 8,
+        marginTop: 20,
+        alignSelf: 'center',
+        elevation: 3,
     },
     closeButtonText: {
-        color: 'black',
+        color: '#FFF', 
         fontSize: 16,
+        fontWeight: 'bold',
     },
 });

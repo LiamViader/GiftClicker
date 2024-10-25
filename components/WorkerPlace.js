@@ -107,7 +107,6 @@ export default WorkerPlace;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'lavender',
         width: 60,
         height: 60,
         borderRadius: 4,
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         bottom: 0,
-        width: '50%', // Ocupa el 50% del ancho de la pantalla
+        width: '50%', 
         backgroundColor: 'white',
         justifyContent: 'center',
         alignItems: 'center',

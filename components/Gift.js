@@ -1,10 +1,9 @@
 import { View, StyleSheet, Text, Pressable } from 'react-native';
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { PlayerContext } from '../context/playerContext';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import ClosedGift from './ClosedGift';
 import OpenGift from './OpenGift';
-import { WorkersContext } from '../context/workersContext';
 
 const Gift = ({ id, color, initialClicksToOpen, onDelete, giftObject, worker}) => {
     // Animación
@@ -13,6 +12,7 @@ const Gift = ({ id, color, initialClicksToOpen, onDelete, giftObject, worker}) =
     const openGiftFadeOut = useSharedValue(1);
     const openGiftScale = useSharedValue(0);
     const openGiftTranslateY = useSharedValue(0);
+
 
     const animatedClosedGiftStyle = useAnimatedStyle(() => {
         return {
@@ -42,7 +42,7 @@ const Gift = ({ id, color, initialClicksToOpen, onDelete, giftObject, worker}) =
     const handleOpen = () => {
         closedGiftScale.value = withTiming(closedGiftScale.value + 1, { duration: 500 });
         closedGiftFadeOut.value = withTiming(0, { duration: 500 }, () => {
-            setOpened(true);
+            runOnJS(setOpened)(true);
             openGiftScale.value = withTiming(1, { duration: 500 });
         });
     };
@@ -52,7 +52,7 @@ const Gift = ({ id, color, initialClicksToOpen, onDelete, giftObject, worker}) =
         setPlayerStats(updatedStats);
         openGiftFadeOut.value = withTiming(0, { duration: 100 });
         openGiftTranslateY.value = withTiming(-100, { duration: 250 }, () => {
-            onDelete(id);
+          runOnJS(onDelete)(id);
         });
     };
 

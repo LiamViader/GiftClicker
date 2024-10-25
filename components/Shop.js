@@ -53,29 +53,39 @@ const Shop = () => {
         }
     }
 
-    const handleUpgradeWorker = (id,price) =>{
-        if (playerStats.coins>=price){
+    const handleUpgradeWorker = (id, price) => {
+        if (playerStats.coins >= price) {
             setWorkers((prevWorkers) => {
-                return prevWorkers.map(worker=>{
+                return prevWorkers.map(worker => {
                     if (worker.id === id) {
-                        return { ...worker, clicksPerSecond:worker.upgrades[worker.level].multiplyingFactor*worker.clicksPerSecond, level: worker.level+1 };
+                        const currentLevel = worker.level;
+                        const upgradeData = worker.upgrades[currentLevel];
+    
+                        if (upgradeData) {
+                            return {
+                                ...worker,
+                                clicksPerSecond: upgradeData.multiplyingFactor * worker.clicksPerSecond,
+                                level: currentLevel + 1,
+                                img: upgradeData.evolution ? upgradeData.evolutionImage : worker.img, 
+                                giftRange: upgradeData.evolution ? worker.giftRange + 1 : worker.giftRange, 
+                            };
+                        }
                     }
                     return worker;
-                })
+                });
             });
-            setPlayerStats((prevPlayerStats) =>{
-                return {...prevPlayerStats, coins:prevPlayerStats.coins-price};
+            setPlayerStats((prevPlayerStats) => {
+                return { ...prevPlayerStats, coins: prevPlayerStats.coins - price };
             });
         }
-
-    }
+    };
 
 
     return (
         <>
-            <View style={styles.container}>
+            <View style={styles.buttonShopContainer}>
                 <Pressable style={styles.shopButton} onPress={toggleModal}>
-                    <Text style={styles.buttonText}>Store</Text>
+                    <Text style={styles.buttonText}>Shop</Text>
                 </Pressable>
             </View>
 
@@ -103,7 +113,9 @@ const Shop = () => {
                                 </View>
                             )}
                         />
-                        <Button title="Close" onPress={toggleModal} />
+                        <Pressable style={styles.buttonClose}  onPress={toggleModal}>
+                            <Text style={styles.buttonCloseText}>Close</Text>
+                        </Pressable>
                     </View>
                 </View>
             </Modal>
@@ -112,50 +124,86 @@ const Shop = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-end',
+    buttonShopContainer: {
+        position: 'absolute',
+        bottom: 20,
+        width: '100%',
+        alignItems: 'center',
     },
     shopButton: {
         backgroundColor: '#FF5733',
-        padding: 15,
-        borderRadius: 5,
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        borderRadius: 8,
+        width: '80%', 
         alignItems: 'center',
+        elevation: 3,
     },
     buttonText: {
-        color: 'white',
+        color: '#FFF',
         fontWeight: 'bold',
+        fontSize: 18,
+    },
+    buttonClose: {
+        paddingVertical: 8,
+        paddingHorizontal: 20,
+        backgroundColor: '#FF5733',
+        borderRadius: 8,
+        marginTop: 20,
+        alignSelf: 'center',
+        elevation: 3,
+    },
+    buttonCloseText: {
+        color: '#FFF',
+        fontWeight: 'bold',
+        fontSize: 18,
     },
     modalBackground: {
         flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', 
         justifyContent: 'flex-end',
     },
     modalContainer: {
-        height: '70%',
-        backgroundColor: 'white',
-        padding: 10,
+        height: '75%',
+        backgroundColor: '#1C1C1E', 
+        padding: 20,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         alignItems: 'center',
+        elevation: 5,
     },
     modalTitle: {
-        fontSize: 24,
+        fontSize: 26,
         fontWeight: 'bold',
-        marginBottom: 10,
+        color: '#E5E5E7', 
+        marginBottom: 20,
     },
     header: {
-        padding: 8,
-        backgroundColor: '#f4f4f4',
+        paddingVertical: 8,
+        paddingHorizontal: 15,
+        backgroundColor: '#2C2C2E', 
+        width: '100%',
+        borderRadius: 5,
+        marginVertical: 5,
     },
     headerText: {
         fontWeight: 'bold',
-        fontSize: 24
+        fontSize: 22,
+        color: '#F7F7F7', 
     },
     item: {
-        padding: 10,
+        padding: 12,
+        borderBottomWidth: 1,
+        borderBottomColor: '#3A3A3C',
     },
     itemText: {
         fontSize: 16,
+        color: '#E5E5E7', 
+    },
+    closeButton: {
+        backgroundColor: '#FF5733',
+        marginTop: 15,
+        borderRadius: 5,
     },
 });
 

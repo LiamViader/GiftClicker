@@ -1,6 +1,6 @@
 import React, { useState, useEffect,useContext } from 'react';
 import { FlatList, View, Text, StyleSheet } from 'react-native';
-import { v4 as uuidv4 } from 'uuid';
+import uuid from 'react-native-uuid';
 import Gift from './Gift';
 
 import Animated, {  LinearTransition } from 'react-native-reanimated';
@@ -16,7 +16,7 @@ const GiftLine = ({ color, numGifts, clicksToOpen, tier, giftLine }) => {
 
   const initializeGifts = () => {
     const newGiftsData = Array.from({ length: numGifts }, () => ({
-      id: uuidv4(), // Generar un id unic amb uuid perque react native pugui mantenir localitzat el objecte per temes de renderitzat
+      id: uuid.v4(), // Generar un id unic amb uuid perque react native pugui mantenir localitzat el objecte per temes de renderitzat
       color: color,
       giftObject: getRandomObject(tier),
     }));
@@ -31,7 +31,7 @@ const GiftLine = ({ color, numGifts, clicksToOpen, tier, giftLine }) => {
     setGiftsData((prevGiftsData) => {
       const updatedGifts = prevGiftsData.filter(gift => gift.id !== id);
       newGift = {
-        id: uuidv4(), 
+        id: uuid.v4(), 
         color: color,
         giftObject: getRandomObject(tier),
       }
@@ -64,7 +64,7 @@ const GiftLine = ({ color, numGifts, clicksToOpen, tier, giftLine }) => {
             initialClicksToOpen={clicksToOpen} 
             giftObject={item.giftObject}
             onDelete={handleDeleteGift}
-            {...(index === 0 ? { worker: currentWorker } : {worker: null})}
+            {...(index < currentWorker?.giftRange ? { worker: currentWorker } : {worker: null})}
           />
         )}
         keyExtractor={item => item.id}
@@ -78,18 +78,27 @@ const GiftLine = ({ color, numGifts, clicksToOpen, tier, giftLine }) => {
 
 
 const styles = StyleSheet.create({
-  contentContainerFlatlist: {
-    height: 80,
+  fatherContainer: {
+    flexDirection: 'row',
     flex: 1,
-    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginVertical: 10,
+    padding: 10,
+    backgroundColor: '#1C1C1E',
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 5,
+    width: '95%',
+    alignSelf: 'center',
+    height: 80,
+  },
+  contentContainerFlatlist: {
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  fatherContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 10
-  }
 });
 
 export default GiftLine;

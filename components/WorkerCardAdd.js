@@ -17,38 +17,38 @@ const WorkerCardAdd = ({ worker, onPressed,}) => {
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: 'white',
-        borderRadius: 10,
-        padding: 10,
-        margin: 10,
+        backgroundColor: '#2C2C2E',
+        borderRadius: 15,
+        padding: 15,
+        marginVertical: 10,
+        marginHorizontal: 20,
+        alignItems: 'center', 
         shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1.41,
-        elevation: 2,
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 4 },
+        elevation: 6,
     },
     image: {
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        width: 100,
-        height: 100,
-        borderRadius: 10,
+        width: 80,
+        height: 80,
+        borderRadius: 8,
+        marginBottom: 10,
     },
     title: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: 'bold',
-        marginVertical: 5,
+        color: '#E5E5E7',
+        marginBottom: 5,
     },
     clicksPerSecond: {
         fontSize: 16,
-        color: 'blue',
+        color: '#61DAFB', 
+        marginBottom: 3,
     },
     level: {
         fontSize: 16,
-        color: 'orange',
+        color: '#FF9F1C', 
     },
 });
 

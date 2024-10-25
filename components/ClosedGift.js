@@ -2,10 +2,10 @@ import { View, StyleSheet, Text, Pressable } from 'react-native';
 import React, { useState, useEffect, useContext, forwardRef, useImperativeHandle, useRef } from 'react';
 import { PlayerContext } from '../context/playerContext';
 import Animated, {useAnimatedStyle, useSharedValue, withTiming, withSequence, FadeOut} from 'react-native-reanimated';
+import formatNumber from '../utils/formatNumbers';
 
 
-
-const ClosedGift = forwardRef(({initialClicksToOpen, color, onOpen, workingPlace, worker},ref) =>{
+const ClosedGift = forwardRef(({initialClicksToOpen, color, onOpen, worker},ref) =>{
     //animacio
     const scale = useSharedValue(1);
 
@@ -15,10 +15,9 @@ const ClosedGift = forwardRef(({initialClicksToOpen, color, onOpen, workingPlace
         };
     }, []);
 
-
     //logica
-
     const [clicksLeft, setClicksLeft] = useState(initialClicksToOpen);
+
     const [canPress, setCanPress] = useState(true);
 
     const { playerStats } = useContext(PlayerContext);
@@ -87,7 +86,7 @@ const ClosedGift = forwardRef(({initialClicksToOpen, color, onOpen, workingPlace
     return (
         <Pressable ref={ref} onPress={handlePress} style={styles.container}>
             <Animated.View style={[styles.gift, animatedStyle, { backgroundColor: color }]}>
-            <Text style={styles.text}>{clicksLeft}</Text>
+            <Text style={styles.text}>{formatNumber(clicksLeft)}</Text>
             </Animated.View>
         </Pressable>
     );
@@ -105,7 +104,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontWeight: 'bold',
-        fontSize: '90%'
+        fontSize: 20
     },
 });
 

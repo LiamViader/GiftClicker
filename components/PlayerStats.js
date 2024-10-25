@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, FlatList, Image, Text } from 'react-native';
-
+import formatNumber from '../utils/formatNumbers';
 
 import { PlayerContext } from '../context/playerContext';
 
@@ -23,7 +23,7 @@ const PlayerStats = () =>{
             />
             <View style={styles.textContainer}>
                 <Text style={styles.text}>
-                    {playerStats.clickDamage}
+                    {formatNumber(playerStats.clickDamage)}
                 </Text>
             </View>
 
@@ -36,7 +36,7 @@ const PlayerStats = () =>{
             />
             <View style={styles.textContainer}>
                 <Text style={styles.text}>
-                    {playerStats.coins}
+                    {formatNumber(playerStats.coins)}
                 </Text>
             </View>
           </View>
@@ -49,30 +49,41 @@ export default PlayerStats;
 
 const styles = StyleSheet.create({
     playerStats: {
-        height: '7%',
+        height: 60,
         flexDirection: 'row',
+        width: '90%',
+        marginHorizontal: '5%', 
+        marginVertical: 10,
+        padding: 10,
+        backgroundColor: '#1C1C1E', 
+        borderRadius: 15,
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        shadowColor: '#000', 
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 3 },
+        elevation: 6, 
+        marginBottom: 25,
     },
     damageStats: {
-        flex: 1,
         flexDirection: 'row',
-        alignItems: 'center', // Centra verticalmente
+        alignItems: 'center',
     },
     coinStats: {
-        flex: 1,
         flexDirection: 'row',
-        alignItems: 'center', // Centra verticalmente
+        alignItems: 'center',
     },
     textContainer: {
-        color: 'black', 
-        marginRight: 'auto'
-        
+        marginLeft: 8,
     },
     text: {
-        fontSize: 30,
-        
+        fontSize: 20,
+        color: '#FFF',
+        fontWeight: '600',
     },
     image: {
-        width: '50%',
-        height: '50%',
+        width: 25,
+        height: 25,
     },
 });

@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, Text } from 'react-native';
 import GiftLine from './components/GiftLine';
-import { v4 as uuidv4 } from 'uuid';
+import uuid from 'react-native-uuid';
 
 import { PlayerProvider } from './context/playerContext';
 import { WorkersProvider } from './context/workersContext';
@@ -9,12 +9,15 @@ import { WorkersProvider } from './context/workersContext';
 import Shop from './components/Shop';
 import PlayerStats from './components/PlayerStats';
 
+
+
+
 export default function App() {
 
 
   const createGiftLine = (color, clicksToOpen) => {
     return {
-      id: uuidv4(), // Genera un ID único
+      id: uuid.v4(), // Genera un ID único
       color,
       clicksToOpen,
     };
@@ -26,16 +29,21 @@ export default function App() {
       createGiftLine('#FF5733',20),
       createGiftLine('#33FF57',500),
       createGiftLine('#3357FF',10000),
-      createGiftLine('#3357FF',100000),
-      createGiftLine('#3357FF',1000000),
+      createGiftLine('#33A1FF',100000),
+      createGiftLine('#FFD133',1000000),
   ]
 
 
-  const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33F6', '#FFBD33'];
-
   return (
     <PlayerProvider>
+
+
       <View style={styles.container}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>
+            GiftClicker
+          </Text>
+        </View>
         <PlayerStats/>
         <WorkersProvider>
           <FlatList
@@ -43,7 +51,7 @@ export default function App() {
             renderItem={({ item, index }) => (
               <GiftLine 
                 color={item.color} 
-                numGifts={4} 
+                numGifts={15} 
                 clicksToOpen={item.clicksToOpen} 
                 tier={index}
                 giftLine={index}
@@ -53,6 +61,7 @@ export default function App() {
             contentContainerStyle={styles.flatListContent}
             style={styles.flatListContainer}
           />
+          <View style={styles.spacing}></View>
           <Shop/>
         </WorkersProvider>
       </View>
@@ -66,8 +75,21 @@ const styles = StyleSheet.create({
     flex: 1, 
   },
   flatListContent: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: 'rgb(240,240,240)',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
+    marginBottom: 20,
+    paddingBottom: 20
   },
+  title: {
+    fontSize: 50,
+    textAlign: 'center'
+  },
+  titleContainer: {
+    display: 'flex',
+    padding: 20,
+  },
+  spacing: {
+    height: 50,
+  }
 });
