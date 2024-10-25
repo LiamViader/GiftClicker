@@ -4,6 +4,7 @@ import GiftLine from './components/GiftLine';
 import { v4 as uuidv4 } from 'uuid';
 
 import { PlayerProvider } from './context/playerContext';
+import { WorkersProvider } from './context/workersContext';
 
 import Shop from './components/Shop';
 import PlayerStats from './components/PlayerStats';
@@ -34,24 +35,26 @@ export default function App() {
 
   return (
     <PlayerProvider>
-
       <View style={styles.container}>
         <PlayerStats/>
-        <FlatList
-          data={giftLines}
-          renderItem={({ item, index }) => (
-            <GiftLine 
-              color={item.color} 
-              numGifts={5} 
-              clicksToOpen={item.clicksToOpen} 
-              tier={index}
-            />
-          )}
-          keyExtractor={item => item.id}
-          contentContainerStyle={styles.flatListContent}
-          style={styles.flatListContainer}
-        />
-        <Shop/>
+        <WorkersProvider>
+          <FlatList
+            data={giftLines}
+            renderItem={({ item, index }) => (
+              <GiftLine 
+                color={item.color} 
+                numGifts={4} 
+                clicksToOpen={item.clicksToOpen} 
+                tier={index}
+                giftLine={index}
+              />
+            )}
+            keyExtractor={item => item.id}
+            contentContainerStyle={styles.flatListContent}
+            style={styles.flatListContainer}
+          />
+          <Shop/>
+        </WorkersProvider>
       </View>
     </PlayerProvider>
   );

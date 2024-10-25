@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import React, { useState, useEffect,useContext } from 'react';
+import { FlatList, View, Text, StyleSheet } from 'react-native';
 import { v4 as uuidv4 } from 'uuid';
 import Gift from './Gift';
 
-import Animated, {  LinearTransition, JumpingTransition } from 'react-native-reanimated';
+import Animated, {  LinearTransition } from 'react-native-reanimated';
 import { getRandomObject } from '../data/giftObjects';
+import WorkerPlace from './WorkerPlace';
+import { WorkersContext } from '../context/workersContext';
+
 
 // Representa una linea de regals
-const GiftLine = ({ color, numGifts, clicksToOpen, tier }) => {
+const GiftLine = ({ color, numGifts, clicksToOpen, tier, giftLine }) => {
 
   const [giftsData, setGiftsData] = useState([]);
 
@@ -36,34 +39,57 @@ const GiftLine = ({ color, numGifts, clicksToOpen, tier }) => {
     });
   }
 
+  const { workers } = useContext(WorkersContext); 
+  const [currentWorker,setCurrentWorker] = useState(null);
+
+  useEffect(() => {
+    if (workers) {
+        const worker = workers.find(worker => worker.workingPlace === giftLine) || null;
+        setCurrentWorker(worker);
+    }
+}, [workers]);
+
+
+
   return (
-    <Animated.FlatList 
-      horizontal
-      data={giftsData}
-      renderItem={({ item }) => (
-        <Gift 
-          id={item.id}
-          color={item.color} 
-          initialClicksToOpen={clicksToOpen} 
-          giftObject={item.giftObject}
-          onDelete={handleDeleteGift}
-        />
-      )}
-      keyExtractor={item => item.id}
-      itemLayoutAnimation={JumpingTransition}
-      contentContainerStyle={styles.contentContainer}
-    />
+    <View style={styles.fatherContainer}>
+      <WorkerPlace workingPlace={giftLine}/>
+      <Animated.FlatList 
+        horizontal
+        data={giftsData}
+        renderItem={({ item, index }) => (
+          <Gift 
+            id={item.id}
+            color={item.color} 
+            initialClicksToOpen={clicksToOpen} 
+            giftObject={item.giftObject}
+            onDelete={handleDeleteGift}
+            {...(index === 0 ? { worker: currentWorker } : {worker: null})}
+          />
+        )}
+        keyExtractor={item => item.id}
+        itemLayoutAnimation={LinearTransition}
+        contentContainerStyle={styles.contentContainerFlatlist}
+      />
+    </View>
+    
   );
 };
 
 
 const styles = StyleSheet.create({
-  contentContainer: {
+  contentContainerFlatlist: {
     height: 80,
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
   },
+  fatherContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 10
+  }
 });
 
 export default GiftLine;

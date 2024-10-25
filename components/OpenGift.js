@@ -7,14 +7,7 @@ import Animated, {useAnimatedStyle, useSharedValue, withTiming, withSequence, Fa
 
 
 const OpenGift = forwardRef(({onTookObject, giftObject},ref) =>{
-    //animacio
-    const scale = useSharedValue(1);
 
-    const animatedStyle = useAnimatedStyle(()=>{
-        return {
-            transform: [{scale: scale.value}],
-        };
-    }, []);
 
     //logica
 
@@ -41,16 +34,6 @@ const OpenGift = forwardRef(({onTookObject, giftObject},ref) =>{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    gift: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 5,
-    },
-    text: {
-        fontWeight: 'bold',
-        fontSize: '90%'
     },
     image: {
         width: '100%',
